@@ -4,6 +4,8 @@ namespace PokerHand;
 
 class PokerHand
 {
+    private string $hand;
+
     public function __construct($hand)
     {
         $this->hand = $hand;
@@ -13,13 +15,16 @@ class PokerHand
     {
         // TODO: Implement poker hand ranking
     
+        // Format string of cards into an array
         $hand_array = explode(" ", $this->hand);
+
+        // Array that will hold the cart and suit
         $card_hand = [];
 
         // Input Validation Variables
         $valid_suits = ['h', 'c', 's', 'd'];
         $valid_cards = ['A', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
-        $invalid_cards = [];
+        $duplicate_card_check = [];
 
         // Validation - Check Length
         if (count($hand_array) != 5) {
@@ -32,14 +37,20 @@ class PokerHand
             $suit = substr($array_item, -1);
             
             // Validation - Check Suits
-            // if( !in_array($suit, $valid_suits, true) ) {
-
-            // }
+            if( !in_array($suit, $valid_suits, true) ) {
+                return "Invalid suit detected in hand.";
+            }
 
             // Validation - Check Cards
-            // if ( !in_array($card, $valid_cards, true) ) {
+            if ( !in_array($card, $valid_cards, true) ) {
+                return "Invalid card detected in hand.";
+            }
 
-            // }
+            // Validation - Duplicate Cards
+            if ( in_array($array_item, $duplicate_card_check, true) ) {
+                return "Duplicate card detected in hand.";
+            }
+            $duplicate_card_check[] = $array_item;
 
             // Convert Special Cards to Numbers
             switch ($card) {
@@ -62,33 +73,32 @@ class PokerHand
                 'suit' => $suit,
             ];
         }
-
-        //print_r($card_hand);
         
-        $isRoyal = false;
-        $isFlush = false;
-        $isSequential = false;
+        // Variables for various hand conditions
+        $is_royal = false;
+        $is_flush = false;
+        $is_sequential = false;
 
         // Determines if Flush
         if (count(array_unique(array_column($card_hand, 'suit'))) == 1) {
-            $isFlush = true;
+            $is_flush = true;
         }
 
         // Determines if Sequential
-        $sequencedCards = array_column($card_hand, 'card');
-        sort($sequencedCards);
+        $sequenced_cards = array_column($card_hand, 'card');
+        sort($sequenced_cards);
 
-        // Detect a Royal Flush, then detect if A is low card
-        if ($sequencedCards == [10, 11, 12, 13, 14]) {
-            $isRoyal = true;
-            $isSequential = true;
-        } else if ($sequencedCards == [2, 3, 4, 5, 14]) {
-            $isSequential = true;
+        // Checks for sequence, with edge cases (Royal Flush and Ace as low card)
+        if ($sequenced_cards == [10, 11, 12, 13, 14]) {
+            $is_royal = true;
+            $is_sequential = true;
+        } else if ($sequenced_cards == [2, 3, 4, 5, 14]) {
+            $is_sequential = true;
         } else {
-            $isSequential = true;
-            for ($i = 1; $i < count($sequencedCards); $i++) {
-                if ($sequencedCards[$i] !== $sequencedCards[$i - 1] + 1) {
-                    $isSequential = false;
+            $is_sequential = true;
+            for ($i = 1; $i < count($sequenced_cards); $i++) {
+                if ($sequenced_cards[$i] !== $sequenced_cards[$i - 1] + 1) {
+                    $is_sequential = false;
                     break;
                 }
             }
@@ -99,17 +109,17 @@ class PokerHand
         sort($card_counts);
 
         // Returns Hand
-        if ($isRoyal && $isFlush) {
+        if ($is_royal && $is_flush) {
             return "Royal Flush";
-        } else if ($isFlush && $isSequential) {
+        } else if ($is_flush && $is_sequential) {
             return "Straight Flush";
         }else if ($card_counts === [1, 4]) {
             return "Four of a Kind";
         } else if ($card_counts === [2, 3]) {
             return "Full House";
-        } else if ($isFlush) {
+        } else if ($is_flush) {
             return "Flush";
-        } else if ($isSequential) {
+        } else if ($is_sequential) {
             return "Straight";
         } else if ($card_counts === [1, 1, 3]) {
             return "Three of a Kind";
