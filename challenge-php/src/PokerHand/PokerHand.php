@@ -14,11 +14,10 @@ class PokerHand
     public function getRank()
     {
         // TODO: Implement poker hand ranking
-
         // Format string of cards into an array
         $hand_array = explode(" ", $this->hand);
 
-        // Array that will hold the cart and suit
+        // Array that will hold the card and suit
         $card_hand = [];
 
         // Input Validation Variables
