@@ -5,7 +5,6 @@ class PokerHand {
 
   getRank() {
     // Implement poker hand ranking
-
     // Formatting string of cards into an array
     const hand_array = this.hand.split(" ");
 
