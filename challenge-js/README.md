@@ -1,4 +1,4 @@
-<h2>JS Take Home Challenge</h2>
+ t<h2>JS Take Home Challenge</h2>
 
 #### Make sure you are in the `/challenge-js` directory.
 
