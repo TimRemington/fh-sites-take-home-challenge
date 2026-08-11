@@ -41,5 +41,31 @@ class PokerHandTest extends TestCase
         $this->assertEquals('Flush', $hand->getRank());
     }
 
+    /**
+     * @test
+     */
+    public function itCanDetectDuplicates()
+    {
+        $hand = new PokerHand('Kh Qh Qh 2h 9h');
+        $this->assertEquals('Duplicate card detected in hand.', $hand->getRank());
+    }
+
+    /**
+     * @test
+     */
+    public function itCanDetectFakeSuits()
+    {
+        $hand = new PokerHand('Kh 7h 3h 2t 9h');
+        $this->assertEquals('Invalid suit detected in hand.', $hand->getRank());
+    }
+
+    /**
+     * @test
+     */
+    public function itCanDetectFakeCards()
+    {
+        $hand = new PokerHand('Kh 55h 3h 2d 9h');
+        $this->assertEquals('Invalid card detected in hand.', $hand->getRank());
+    }
     // TODO: More tests go here
 }
