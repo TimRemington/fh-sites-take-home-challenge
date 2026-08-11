@@ -14,7 +14,7 @@ class PokerHand
     public function getRank()
     {
         // TODO: Implement poker hand ranking
-    
+
         // Format string of cards into an array
         $hand_array = explode(" ", $this->hand);
 
@@ -23,7 +23,7 @@ class PokerHand
 
         // Input Validation Variables
         $valid_suits = ['h', 'c', 's', 'd'];
-        $valid_cards = ['A', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
+        $valid_cards = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
         $duplicate_card_check = [];
 
         // Validation - Check Length

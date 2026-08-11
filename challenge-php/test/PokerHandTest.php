@@ -35,10 +35,20 @@ class PokerHandTest extends TestCase
     /**
      * @test
      */
-    public function itCanRankAFlush()
+    public function itCanRankAStraightFlush()
     {
         $hand = new PokerHand('Kh Qh 6h 2h 9h');
         $this->assertEquals('Flush', $hand->getRank());
+    }
+
+
+    /**
+     * @test
+     */
+    public function itCanRankAStraight()
+    {
+        $hand = new PokerHand('4h 5c 6d 7s 8h');
+        $this->assertEquals('Straight', $hand->getRank());
     }
 
     /**
