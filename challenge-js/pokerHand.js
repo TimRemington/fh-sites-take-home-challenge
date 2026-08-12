@@ -83,6 +83,8 @@ class PokerHand {
     // Creates array for pairs of of-a-kind comparison
     const counts = {};
     for (const value of card_values) {
+        // counts[value] is undefined the first time we see a value, so
+        // "|| 0" defaults it to 0 before adding 1, avoiding NaN from undefined + 1
         counts[value] = (counts[value] || 0) + 1;
     }
 
@@ -90,6 +92,7 @@ class PokerHand {
     card_counts.sort((a, b) => a - b);
 
     // Determines if Sequential, with edge cases (Royal Flush and Ace as low card)
+    // *comparing stringified arrays since JS doesn't support array equality with ==
     if (JSON.stringify(sequenced_cards) === JSON.stringify([2, 3, 4, 5, 14])) {
         is_sequential = true;
     } else {
@@ -102,6 +105,7 @@ class PokerHand {
         }
     }
     
+    // If sequence starts with 10, then the array is a royal flush
     is_royal = is_sequential && sequenced_cards[0] === 10;
 
     // Returns Hand
